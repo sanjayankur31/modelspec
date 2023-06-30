@@ -142,8 +142,12 @@ if __name__ == "__main__":
     net.populations.append(Population("IzhPop0", component="izh2007RS0", size=1))
     net.explicitInputs.append(ExplicitInput(target="IzhPop0[0]", input="pulseGen_0"))
 
-    print(nml_doc)
-    print(nml_doc.id)
+    # print(nml_doc)
+    # print(nml_doc.id)
+
+    print(nml_doc.to_xml())
+
+    """
 
     nml_doc.to_json_file("%s.json" % nml_doc.id)
     nml_doc.to_yaml_file("%s.yaml" % nml_doc.id)
@@ -181,3 +185,4 @@ if __name__ == "__main__":
         yy = yaml.dump(doc_dict, indent=4, sort_keys=False)
         print(yy)
         d.write(yy)
+    """

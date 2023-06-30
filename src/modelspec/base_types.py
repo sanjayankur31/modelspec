@@ -2,6 +2,7 @@ import json
 import yaml
 import bson
 import sys
+import inspect
 
 import numpy as np
 import attr
@@ -100,6 +101,38 @@ class Base:
             return {self.id: d}
         else:
             return d
+
+    def to_xml(self):
+        """Convert base object into XML."""
+        # do not use unstructure---lossy, we no longer know what is a list
+        # print(converter.unstructure(self))
+        # print(self)
+
+        # print(f"In {self.__class__.__name__}")
+        attrs = attr.fields(self.__class__)
+        attributes = ""
+        children = []
+        for aattr in attrs:
+            # print(f"name: {aattr.name};  default: {aattr.default}; type: {aattr.type}")
+            if isinstance(aattr.default, attr.Factory):
+                # print("It's a factory, should likely be a child element")
+                # print(f"Got child element: {self.__getattribute__(aattr.name)}")
+                children.extend(self.__getattribute__(aattr.name))
+            else:
+                # can do more here based on the type of the field if required
+                # print("It's a string, should be an attribute")
+                # print(f"Got attribute: {self.__getattribute__(aattr.name)}")
+                attributes += f"{aattr.name}=\"{self.__getattribute__(aattr.name)}\" "
+
+        # no children
+        if len(children) == 0:
+            print(f"-> <{self.__class__.__name__} {attributes} />")
+        else:
+            print(f"-> <{self.__class__.__name__} {attributes}>")
+            for child in children:
+                child.to_xml()
+            print(f"-> <{self.__class__.__name__}/>")
+
 
     def to_json(self) -> str:
         """
