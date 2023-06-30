@@ -2,7 +2,6 @@ import json
 import yaml
 import bson
 import sys
-import inspect
 
 import numpy as np
 import attr
@@ -126,12 +125,12 @@ class Base:
 
         # no children
         if len(children) == 0:
-            print(f"-> <{self.__class__.__name__} {attributes} />")
+            print(f"<{self.__class__.__name__} {attributes} />")
         else:
-            print(f"-> <{self.__class__.__name__} {attributes}>")
+            print(f"<{self.__class__.__name__} {attributes}>")
             for child in children:
                 child.to_xml()
-            print(f"-> <{self.__class__.__name__}/>")
+            print(f"<{self.__class__.__name__}/>")
 
 
     def to_json(self) -> str:
